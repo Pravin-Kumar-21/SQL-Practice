@@ -1,0 +1,103 @@
+#########################################################
+To create the tables for Client, Product, and Salesman with the specified attributes and implement DDL and DML commands, we'll use SQL. Please note that the syntax may vary slightly depending on the database management system (DBMS) you are using. I'll provide a generic SQL implementation. Let's start with the DDL (Data Definition Language) commands for creating the tables:
+
+Client Table:
+Primary Key: client_id
+Non-Prime Attributes: client_name, client_email, client_phone
+#########################################################
+CREATE TABLE Client (
+    client_id INT PRIMARY KEY,
+    client_name VARCHAR(50) NOT NULL,
+    client_email VARCHAR(100),
+    client_phone VARCHAR(15)
+);
+
+#########################################################
+Product Table:
+Primary Key: product_id
+Non-Prime Attributes: product_name, product_price
+#########################################################
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_price DECIMAL(10, 2) NOT NULL
+);
+##########################################################
+Salesman Table:
+Primary Key: salesman_id
+Non-Prime Attributes: salesman_name, salesman_phone
+Foreign Key: client_id (referencing the Client table)
+##########################################################
+CREATE TABLE Salesman (
+    salesman_id INT PRIMARY KEY,
+    salesman_name VARCHAR(50) NOT NULL,
+    salesman_phone VARCHAR(15),
+    client_id INT,
+    FOREIGN KEY (client_id) REFERENCES Client (client_id)
+);
+#############################################################
+Now, let's implement the DML (Data Manipulation Language) commands to populate the tables with data using the INSERT command and perform some basic SELECT, UPDATE, and DELETE operations:
+
+Populating the tables with data
+#############################################################
+-- Inserting data into the Client table
+INSERT INTO Client (client_id, client_name, client_email, client_phone)
+VALUES
+    (1, 'John Smith', 'john@example.com', '123-456-7890'),
+    (2, 'Jane Doe', 'jane@example.com', '987-654-3210');
+
+-- Inserting data into the Product table
+INSERT INTO Product (product_id, product_name, product_price)
+VALUES
+    (101, 'Widget A', 10.99),
+    (102, 'Widget B', 15.49);
+
+-- Inserting data into the Salesman table
+INSERT INTO Salesman (salesman_id, salesman_name, salesman_phone, client_id)
+VALUES
+    (201, 'Mike Johnson', '555-123-4567', 1),
+    (202, 'Sarah Williams', '444-789-1234', 2);
+
+###############################################################
+Retrieving data using simple SELECT queries:
+###############################################################
+-- Select all clients
+SELECT * FROM Client;
+
+-- Select all products
+SELECT * FROM Product;
+
+-- Select all salesmen
+SELECT * FROM Salesman;
+
+-- Select salesmen along with their associated clients
+SELECT s.*, c.client_name, c.client_email, c.client_phone
+FROM Salesman s
+LEFT JOIN Client c ON s.client_id = c.client_id;
+#####################################################################
+Updating data using UPDATE command:
+#####################################################################
+-- Update the price of a specific product
+UPDATE Product
+SET product_price = 12.99
+WHERE product_id = 101;
+######################################################################
+Deleting data using DELETE command:
+######################################################################
+-- Delete a specific client and its associated salesman
+DELETE FROM Client
+WHERE client_id = 1;
+#######################################################################
+Dropping tables using DROP command:
+#######################################################################
+-- Drop the Salesman table
+DROP TABLE Salesman;
+
+-- Drop the Product table
+DROP TABLE Product;
+
+-- Drop the Client table
+DROP TABLE Client;
+#######################################################################
+Please note that executing the DROP TABLE commands will permanently delete the tables and their data. Be cautious while running these commands in a production environment.
+

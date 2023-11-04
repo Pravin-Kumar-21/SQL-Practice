@@ -1,0 +1,353 @@
+SQL> desc Client21
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CLIENT_ID                                 NOT NULL NUMBER(38)
+ CLIENT_NAME                               NOT NULL VARCHAR2(50)
+ CLIENT_EMAIL                                       VARCHAR2(100)
+ CLIENT_PHONE                                       VARCHAR2(15)
+
+SQL> CREATE TABLE Product21 (
+  2      product_id INT PRIMARY KEY,
+  3      product_name VARCHAR(100) NOT NULL,
+  4      product_price DECIMAL(10, 2) NOT NULL
+  5  );
+
+Table created.
+
+SQL> CREATE TABLE Salesman21 (
+  2      salesman_id INT PRIMARY KEY,
+  3      salesman_name VARCHAR(50) NOT NULL,
+  4      salesman_phone VARCHAR(15),
+  5      client_id INT,
+  6      FOREIGN KEY (client_id) REFERENCES Client (client_id)
+  7  );
+    FOREIGN KEY (client_id) REFERENCES Client (client_id)
+                                       *
+ERROR at line 6:
+ORA-00942: table or view does not exist
+
+
+SQL> 
+
+SQL> CREATE TABLE Salesman21 (
+  2      salesman_id INT PRIMARY KEY,
+  3      salesman_name VARCHAR(50) NOT NULL,
+  4      salesman_phone VARCHAR(15),
+  5      client_id INT,
+  6      FOREIGN KEY (client_id) REFERENCES Client21 (client_id)
+  7  );
+
+Table created.
+
+SQL> INSERT INTO Client21 (client_id, client_name, client_email, client_phone)
+  2  VALUES
+  3   (1, 'Pravin Kumar', 'pravin@example.com', '9113452561'),
+  4      (2, 'Ajay Raj', 'ajay@example.com', '969192342');
+ (1, 'Pravin Kumar', 'pravin@example.com', '9113452561'),
+                                                        *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> INSERT INTO Client21 (client_id, client_name, client_email, client_phone)
+  2  VALUES
+  3      (1, 'Pravin Kumar', 'pravin@example.com', '9113452561'),
+  4      (2, 'Ajay Raj', 'ajay@example.com', '969192342');
+    (1, 'Pravin Kumar', 'pravin@example.com', '9113452561'),
+                                                           *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> INSERT INTO Client21 (client_id, client_name, client_email, client_phone)
+  2  VALUES
+  3      (1, 'Pravin Kumar', 'pravin@example.com', '9113452561') ,
+  4      (2, 'Ajay Raj', 'ajay@example.com', '969192342')
+  5  ;
+    (1, 'Pravin Kumar', 'pravin@example.com', '9113452561') ,
+                                                            *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> INSERT INTO Client21 (client_id, client_name, client_email, client_phone)
+  2  VALUES
+  3      (1, 'Pravin Kumar', 'pravin@example.com', '9113452561');
+
+1 row created.
+
+SQL> 
+
+SQL>  INSERT INTO Client21 (client_id, client_name, client_email, client_phone)
+  2   VALUES
+  3       (2, 'Ajay Raj', 'Ajay@example.com', '9212267891');
+
+1 row created.
+
+SQL> select * from Client21
+  2  ;
+
+ CLIENT_ID CLIENT_NAME
+---------- --------------------------------------------------
+CLIENT_EMAIL
+--------------------------------------------------------------------------------
+CLIENT_PHONE
+---------------
+         1 Pravin Kumar
+pravin@example.com
+9113452561
+
+         2 Ajay Raj
+Ajay@example.com
+9212267891
+
+ CLIENT_ID CLIENT_NAME
+---------- --------------------------------------------------
+CLIENT_EMAIL
+--------------------------------------------------------------------------------
+CLIENT_PHONE
+---------------
+
+
+SQL> select * from Client21
+  2  ;
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> 
+SQL> 
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> ed/
+
+SQL> ed/
+
+SQL> desci Client21
+SP2-0734: unknown command beginning "desci Clie..." - rest of line ignored.
+SQL> ed/
+
+SQL> /
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> INSERT INTO Product21 (product_id, product_name, product_price)
+  2  VALUES
+  3      (101, 'IPHONE', 10.99),
+  4      (102, 'WATCH', 15.49);
+    (101, 'IPHONE', 10.99),
+                          *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ed/
+
+SQL> /
+    (101, 'IPHONE', 10.99),
+                          *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ed/
+
+SQL>  /
+    (101, 'IPHONE', 10.99),
+                          *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> /
+    (101, 'IPHONE', 10.99),
+                          *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> 
+
+SQL>  INSERT INTO Product21 (product_id, product_name, product_price)
+  2   VALUES
+  3       (101, 'IPHONE', 10.99);
+
+1 row created.
+
+SQL> INSERT INTO Product21 (product_id, product_name, product_price)
+  2  VALUES
+  3      (102, 'WATCH', 15.49);
+
+1 row created.
+
+SQL> INSERT INTO Salesman (salesman_id, salesman_name, salesman_phone, client_id)
+  2  VALUES
+  3      (201, 'Mike Johnson', '555-123-4567', 1);
+INSERT INTO Salesman (salesman_id, salesman_name, salesman_phone, client_id)
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> desc salesman21
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ SALESMAN_ID                                                                                                       NOT NULL NUMBER(38)
+ SALESMAN_NAME                                                                                                     NOT NULL VARCHAR2(50)
+ SALESMAN_PHONE                                                                                                             VARCHAR2(15)
+ CLIENT_ID                                                                                                                  NUMBER(38)
+
+SQL> INSERT INTO Salesman21 (salesman_id, salesman_name, salesman_phone, client_id)
+  2  VALUES
+  3      (201, 'Ramesh Ji', '555-123-4567', 1);
+
+1 row created.
+
+SQL> select * from Salesman21;
+
+SALESMAN_ID SALESMAN_NAME                                      SALESMAN_PHONE   CLIENT_ID
+----------- -------------------------------------------------- --------------- ----------
+        201 Ramesh Ji                                          555-123-4567             1
+
+SQL> INSERT INTO Salesman21 (salesman_id, salesman_name, salesman_phone, client_id)
+  2  VALUES
+  3      (202, 'Akash', '444-789-1234', 2);
+
+1 row created.
+
+SQL> SELECT * FROM Client21;
+
+ CLIENT_ID CLIENT_NAME                                        CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------- -------------------------------------------------- ---------------------------------------------------------------------------------------------------- ---------------
+         1 Pravin Kumar                                       pravin@example.com                                                                                   9113452561
+         2 Ajay Raj                                           Ajay@example.com                                                                                     9212267891
+
+SQL> 
+SQL> SELECT * FROM Product21;
+
+PRODUCT_ID PRODUCT_NAME                                                                                         PRODUCT_PRICE
+---------- ---------------------------------------------------------------------------------------------------- -------------
+       101 IPHONE                                                                                                       10.99
+       102 WATCH                                                                                                        15.49
+
+SQL> 
+SQL> 
+SQL> SELECT * FROM Salesman21;
+
+SALESMAN_ID SALESMAN_NAME                                      SALESMAN_PHONE   CLIENT_ID
+----------- -------------------------------------------------- --------------- ----------
+        201 Ramesh Ji                                          555-123-4567             1
+        202 Akash                                              444-789-1234             2
+
+SQL> SELECT s.*, c.client_name, c.client_email, c.client_phone
+  2  FROM Salesman21 s
+  3  LEFT JOIN Client21 c ON s.client_id = c.client_id;
+
+SALESMAN_ID SALESMAN_NAME                                      SALESMAN_PHONE   CLIENT_ID CLIENT_NAME
+----------- -------------------------------------------------- --------------- ---------- --------------------------------------------------
+CLIENT_EMAIL                                                                                         CLIENT_PHONE
+---------------------------------------------------------------------------------------------------- ---------------
+        201 Ramesh Ji                                          555-123-4567             1 Pravin Kumar
+pravin@example.com                                                                                   9113452561
+
+        202 Akash                                              444-789-1234             2 Ajay Raj
+Ajay@example.com                                                                                     9212267891
+
+
+SQL> UPDATE Product21
+  2  SET product_price = 12.99
+  3  WHERE product_id = 101;
+
+1 row updated.
+
+SQL> select * from Product21;
+
+PRODUCT_ID PRODUCT_NAME                                                                                         PRODUCT_PRICE
+---------- ---------------------------------------------------------------------------------------------------- -------------
+       101 IPHONE                                                                                                       12.99
+       102 WATCH                                                                                                        15.49
+
+SQL> DELETE FROM Client21
+  2  WHERE client_id = 1;
+DELETE FROM Client21
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (CSBS5TH13031121022.SYS_C00145967) violated - child record found
+
+
+SQL> 
