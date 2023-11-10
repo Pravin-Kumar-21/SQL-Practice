@@ -1,0 +1,245 @@
+-- Create CLIENT_MASTER table
+CREATE TABLE CLIENT_MASTER (
+Client_no VARCHAR2(6) PRIMARY KEY CHECK (Client_no LIKE 'C%'),
+Name VARCHAR2(20) NOT NULL,
+City VARCHAR2(15),
+Pincode NUMBER(8),
+State VARCHAR2(15),
+BalDue NUMBER(10, 2)
+);
+
+-- Create PRODUCT_MASTER table
+CREATE TABLE PRODUCT_MASTER (
+Product_no VARCHAR2(6) PRIMARY KEY CHECK (Product_no LIKE 'P%'),
+Description VARCHAR2(15) NOT NULL,
+QTY_ON_Hand NUMBER(8) NOT NULL,
+Sell_Price NUMBER(8, 2) NOT NULL CHECK (Sell_Price <> 0),
+Cost_Price NUMBER(8, 2) NOT NULL CHECK (Cost_Price <> 0)
+);
+
+-- Create SALESMAN_MASTER table
+CREATE TABLE SALESMAN_MASTER (
+Salesman_no VARCHAR2(6) PRIMARY KEY CHECK (Salesman_no LIKE 'S%'),
+Salesman_name VARCHAR2(20) NOT NULL,
+City VARCHAR2(20) NOT NULL,
+Pincode NUMBER(8) NOT NULL,
+State VARCHAR2(20) NOT NULL,
+Sal_Amt NUMBER(8, 2) NOT NULL CHECK (Sal_Amt <> 0)
+);
+
+-- Create SALES_ORDER table
+CREATE TABLE SALES_ORDER (
+Order_no VARCHAR2(6) PRIMARY KEY CHECK (Order_no LIKE 'O%'),
+Client_no VARCHAR2(6),
+Order_date DATE,
+Salesman_no VARCHAR2(6),
+Dely_type CHAR(1) CHECK (Dely_type IN ('F', 'P')),
+Dely_date DATE,
+FOREIGN KEY (Client_no) REFERENCES CLIENT_MASTER(Client_no) ON DELETE SET NULL,
+FOREIGN KEY (Salesman_no) REFERENCES SALESMAN_MASTER(Salesman_no) ON DELETE CASCADE
+);
+
+-- Create SALES_ORDER_DETAILS table
+CREATE TABLE SALES_ORDER_DETAILS (
+Order_no VARCHAR2(6),
+Product_no VARCHAR2(6),
+Qty_disp NUMBER(8),
+Product_rate NUMBER(10, 2),
+FOREIGN KEY (Order_no) REFERENCES SALES_ORDER(Order_no) ON DELETE SET NULL,
+FOREIGN KEY (Product_no) REFERENCES PRODUCT_MASTER(Product_no) ON DELETE CASCADE
+);
+
+
+
+
+ -- Insert 5 records into CLIENT_MASTER table
+INSERT INTO CLIENT_MASTER (Client_no, Name, City, Pincode, State, BalDue)
+VALUES ('C001', 'Ramesh Sharma', 'Mumbai', 400001, 'Maharashtra', 500.00);
+
+INSERT INTO CLIENT_MASTER (Client_no, Name, City, Pincode, State, BalDue)
+VALUES ('C002', 'Sneha Kapoor', 'Delhi', 110001, 'Delhi', 1200.00);
+
+INSERT INTO CLIENT_MASTER (Client_no, Name, City, Pincode, State, BalDue)
+VALUES ('C003', 'Ananya Singh', 'Kolkata', 700001, 'West Bengal', 0.00);
+
+INSERT INTO CLIENT_MASTER (Client_no, Name, City, Pincode, State, BalDue)
+VALUES ('C004', 'Rajesh Patel', 'Ahmedabad', 380001, 'Gujarat', 750.00);
+
+INSERT INTO CLIENT_MASTER (Client_no, Name, City, Pincode, State, BalDue)
+VALUES ('C005', 'Neha Verma', 'Bangalore', 560001, 'Karnataka', 300.00);
+
+-- Insert 5 records into PRODUCT_MASTER table
+INSERT INTO PRODUCT_MASTER (Product_no, Description, QTY_ON_Hand, Sell_Price, Cost_Price)
+VALUES ('P001', 'T-shirt', 100, 500.00, 300.00);
+
+INSERT INTO PRODUCT_MASTER (Product_no, Description, QTY_ON_Hand, Sell_Price, Cost_Price)
+VALUES ('P002', 'Jeans', 200, 700.00, 400.00);
+
+INSERT INTO PRODUCT_MASTER (Product_no, Description, QTY_ON_Hand, Sell_Price, Cost_Price)
+VALUES ('P003', 'Shoes', 150, 1000.00, 600.00);
+
+INSERT INTO PRODUCT_MASTER (Product_no, Description, QTY_ON_Hand, Sell_Price, Cost_Price)
+VALUES ('P004', 'Watch', 300, 800.00, 500.00);
+
+INSERT INTO PRODUCT_MASTER (Product_no, Description, QTY_ON_Hand, Sell_Price, Cost_Price)
+VALUES ('P005', 'Bag', 250, 600.00, 350.00);
+
+-- Insert 5 records into SALESMAN_MASTER table
+INSERT INTO SALESMAN_MASTER (Salesman_no, Salesman_name, City, Pincode, State, Sal_Amt)
+VALUES ('S001', 'Rajiv Gupta', 'Mumbai', 400001, 'Maharashtra', 1500.00);
+
+INSERT INTO SALESMAN_MASTER (Salesman_no, Salesman_name, City, Pincode, State, Sal_Amt)
+VALUES ('S002', 'Pooja Sharma', 'Delhi', 110001, 'Delhi', 1800.00);
+
+INSERT INTO SALESMAN_MASTER (Salesman_no, Salesman_name, City, Pincode, State, Sal_Amt)
+VALUES ('S003', 'Amit Kumar', 'Kolkata', 700001, 'West Bengal', 2000.00);
+
+INSERT INTO SALESMAN_MASTER (Salesman_no, Salesman_name, City, Pincode, State, Sal_Amt)
+VALUES ('S004', 'Nikhil Patel', 'Ahmedabad', 380001, 'Gujarat', 1700.00);
+
+INSERT INTO SALESMAN_MASTER (Salesman_no, Salesman_name, City, Pincode, State, Sal_Amt)
+VALUES ('S005', 'Kavita Verma', 'Bangalore', 560001, 'Karnataka', 1900.00);
+
+-- Insert 5 records into SALES_ORDER table
+INSERT INTO SALES_ORDER (Order_no, Client_no, Order_date, Salesman_no, Dely_type, Dely_date)
+VALUES ('O001', 'C001', TO_DATE('2023-08-01', 'YYYY-MM-DD'), 'S001', 'F', TO_DATE('2023-08-10', 'YYYY-MM-DD'));
+
+INSERT INTO SALES_ORDER (Order_no, Client_no, Order_date, Salesman_no, Dely_type, Dely_date)
+VALUES ('O002', 'C002', TO_DATE('2023-08-02', 'YYYY-MM-DD'), 'S002', 'P', TO_DATE('2023-08-12', 'YYYY-MM-DD'));
+
+INSERT INTO SALES_ORDER (Order_no, Client_no, Order_date, Salesman_no, Dely_type, Dely_date)
+VALUES ('O003', 'C003', TO_DATE('2023-08-03', 'YYYY-MM-DD'), 'S003', 'F', TO_DATE('2023-08-15', 'YYYY-MM-DD'));
+
+INSERT INTO SALES_ORDER (Order_no, Client_no, Order_date, Salesman_no, Dely_type, Dely_date)
+VALUES ('O004', 'C004', TO_DATE('2023-08-04', 'YYYY-MM-DD'), 'S004', 'P', TO_DATE('2023-08-18', 'YYYY-MM-DD'));
+
+INSERT INTO SALES_ORDER (Order_no, Client_no, Order_date, Salesman_no, Dely_type, Dely_date)
+VALUES ('O005', 'C005', TO_DATE('2023-08-05', 'YYYY-MM-DD'), 'S005', 'F', TO_DATE('2023-08-20', 'YYYY-MM-DD'));
+
+-- Insert 5 records into SALES_ORDER_DETAILS table
+INSERT INTO SALES_ORDER_DETAILS (Order_no, Product_no, Qty_disp, Product_rate)
+VALUES ('O001', 'P001', 10, 45.00);
+
+INSERT INTO SALES_ORDER_DETAILS (Order_no, Product_no, Qty_disp, Product_rate)
+VALUES ('O002', 'P002', 5, 55.00);
+
+INSERT INTO SALES_ORDER_DETAILS (Order_no, Product_no, Qty_disp, Product_rate)
+VALUES ('O003', 'P003', 8, 65.00);
+
+INSERT INTO SALES_ORDER_DETAILS (Order_no, Product_no, Qty_disp, Product_rate)
+VALUES ('O004', 'P004', 15, 75.00);
+
+INSERT INTO SALES_ORDER_DETAILS (Order_no, Product_no, Qty_disp, Product_rate)
+VALUES ('O005', 'P005', 12, 85.00);
+
+1. List the names of all clients having ‘a’ as the third letter in their names.
+```sql
+SELECT Name
+FROM CLIENT_MASTER
+WHERE SUBSTR(Name, 3, 1) = 'a';
+```
+
+2. List the clients who stay in a city whose first letter is ‘K’.
+```sql
+SELECT *
+FROM CLIENT_MASTER
+WHERE SUBSTR(City, 1, 1) = 'K';
+```
+
+3. List all the clients who stay in ‘Mumbai’ or ‘Kolkata’.
+```sql
+SELECT *
+FROM CLIENT_MASTER
+WHERE City IN ('Mumbai', 'Kolkata');
+```
+
+4. List all the clients whose BalDue is greater than value 1000.
+```sql
+SELECT *
+FROM CLIENT_MASTER
+WHERE BalDue > 1000;
+```
+
+5. List all information from the Sales_Order table for orders placed in the month of June.
+```sql
+SELECT *
+FROM SALES_ORDER
+WHERE EXTRACT(MONTH FROM Order_date) = 6;
+```
+
+6. List the order information for Client_no ‘C00001’ and ‘C00003’.
+```sql
+SELECT *
+FROM SALES_ORDER
+WHERE Client_no IN ('C00001', 'C00003');
+```
+
+7. List products whose selling price is greater than 500 and less than or equal to 750.
+```sql
+SELECT *
+FROM PRODUCT_MASTER
+WHERE Sell_Price > 500 AND Sell_Price <= 750;
+```
+8. Count the total number of orders.
+```sql
+SELECT COUNT(*) AS Total_Orders
+FROM SALES_ORDER;
+```
+
+9. Determine the maximum and minimum product prices. Rename the output as max_price and min_price respectively.
+```sql
+SELECT MAX(Sell_Price) AS max_price, MIN(Sell_Price) AS min_price
+FROM PRODUCT_MASTER;
+```
+
+10. Count the number of clients who live in Kolkata.
+```sql
+SELECT COUNT(*) AS Clients_In_Kolkata
+FROM CLIENT_MASTER
+WHERE City = 'Kolkata';
+```
+
+11. Count the number of products having a price less than or equal to 500.
+```sql
+SELECT COUNT(*) AS Products_Less_Than_500
+FROM PRODUCT_MASTER
+WHERE Sell_Price <= 500;
+```
+
+12. List the order number and day on which clients placed their order.
+```sql
+SELECT Order_no, EXTRACT(DAY FROM Order_date) AS Order_Day
+FROM SALES_ORDER;
+```
+
+13. List the Order_Date in the format ‘DD-Month-YY’.
+```sql
+SELECT TO_CHAR(Order_date, 'DD-Month-YY') AS Formatted_Order_Date
+FROM SALES_ORDER;
+```
+
+14. List the date, 20 days after today’s date.
+```sql
+SELECT SYSDATE + 20 AS Future_Date
+FROM DUAL;
+```
+
+15. List the name of the client who has the maximum BalDue.
+```sql
+SELECT Name
+FROM CLIENT_MASTER
+WHERE BalDue = (SELECT MAX(BalDue) FROM CLIENT_MASTER);
+```
+
+16. Find the difference between the maximum BalDue and minimum BalDue.
+```sql
+SELECT MAX(BalDue) - MIN(BalDue) AS BalDue_Difference
+FROM CLIENT_MASTER;
+```
+
+17. Add Rs.1000/- with the salary amount of every salesmen.
+```sql
+UPDATE SALESMAN_MASTER
+SET Sal_Amt = Sal_Amt + 1000;
+```
+

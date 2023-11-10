@@ -1,0 +1,86 @@
+-- Create Employee table
+CREATE TABLE Employee (
+    emp_no INT PRIMARY KEY,
+    name VARCHAR(50),
+    dob DATE,
+    sex CHAR(1),
+    address VARCHAR(100),
+    salary DECIMAL(10, 2)
+);
+
+-- Insert data into Employee table
+INSERT INTO Employee VALUES
+    (1, 'John Doe', TO_DATE('1985-05-15','YYYY-MM-DD') ,'M', '123 Main St', 60000.00);
+INSERT INTO Employee VALUES
+    (2, 'Jane Smith', TO_DATE('1990-08-22','YYYY-MM-DD') , 'F', '456 Elm St', 55000.00);
+INSERT INTO Employee VALUES
+    (3, 'Michael Johnson', TO_DATE('1995-02-10','YYYY-MM-DD') , 'M', '789 Oak St', 75000.00);
+INSERT INTO Employee VALUES
+    (4, 'Emily Brown', TO_DATE('2000-11-30','YYYY-MM-DD') , 'F', '101 Pine St', 48000.00);
+
+-- Create Company table
+CREATE TABLE Company (
+    comp_no VARCHAR(10) PRIMARY KEY,
+    name VARCHAR(50),
+    address VARCHAR(100)
+);
+
+-- Insert data into Company table
+INSERT INTO Company VALUES
+    ('C00002', 'ABC Inc', '1234 Corporate Ave');
+INSERT INTO Company VALUES
+    ('C00004', 'XYZ Corp', '5678 Business Rd');
+INSERT INTO Company VALUES
+    ('C00006', 'Clifford Corp', '9876 Innovation Blvd');
+
+-- Create Works table
+CREATE TABLE Works (
+
+    emp_no INT,
+    comp_no VARCHAR(10),
+    PRIMARY KEY (emp_no, comp_no),
+    FOREIGN KEY (emp_no) REFERENCES Employee(emp_no),
+    FOREIGN KEY (comp_no) REFERENCES Company(comp_no)
+);
+
+-- Insert data into Works table
+INSERT INTO Works VALUES
+    (1, 'C00002');
+INSERT INTO Works VALUES
+    (2, 'C00004');
+INSERT INTO Works VALUES
+    (3, 'C00002');
+INSERT INTO Works VALUES
+    (4, 'C00006');
+
+-- List the employees who work for company 'C00002':
+SELECT e.emp_no, e.name
+FROM Employee e
+JOIN Works w ON e.emp_no = w.emp_no
+WHERE w.comp_no = 'C00002';
+
+--List the employees who work for company 'C00004':
+SELECT e.emp_no, e.name
+FROM Employee e
+JOIN Works w ON e.emp_no = w.emp_no
+WHERE w.comp_no = 'C00004';
+
+--List the employees who work for Clifford Corp:
+SELECT e.emp_no, e.name
+FROM Employee e
+JOIN Works w ON e.emp_no = w.emp_no
+JOIN Company c ON w.comp_no = c.comp_no
+WHERE c.name = 'Clifford Corp';
+
+--List the employees whose name ends with 'a':
+SELECT emp_no, name
+FROM Employee
+WHERE name LIKE '%a';
+
+--List the employees born between 1999 and 2011:
+SELECT emp_no, name
+FROM Employee
+WHERE dob BETWEEN TO_DATE('1999-01-01','YYYY-MM-DD') AND TO_DATE('2011-12-31','YYYY-MM-DD');
+
+
+
