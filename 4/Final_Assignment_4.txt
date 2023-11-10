@@ -1,0 +1,344 @@
+mysql> use Test;
+Database changed
+mysql> create table client_master(Client_no varchar(6) primary key, Name varchar(20) not NULL, City varchar(15), Pincode int, State varchar(15), BalDue decimal(10,2)); 
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table client_master modify Name varchar(20) NOT NULL;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table product_master(Product_no varchar(6) primary key CHECK (Product_no REGEXP '^P') ); 
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_Test |
++----------------+
+| client_master  |
+| product_master |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc product_master;
++------------+------------+------+-----+---------+-------+
+| Field      | Type       | Null | Key | Default | Extra |
++------------+------------+------+-----+---------+-------+
+| Product_no | varchar(6) | NO   | PRI | NULL    |       |
++------------+------------+------+-----+---------+-------+
+1 row in set (0.01 sec)
+
+mysql> alter table product_master add (Description varchar(15) not NULL, QTY_ON_Hand int(8) not NULL, Sell_Price decimal(8,2) not NULL check(Sell_Price <> 0), Cost_Price decimal(8,2) not NULL check(Cost_Price < > 0));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '> 0))' at line 1
+mysql> alter table product_master add (Description varchar(15) not NULL, QTY_ON_Hand int(8) not NULL, Sell_Price decimal(8,2) not NULL check(Sell_Price <> 0), Cost_Price decimal(8,2) not NULL check(Cost_Price <> 0));
+Query OK, 0 rows affected, 1 warning (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+mysql> desc product_master;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| Product_no  | varchar(6)   | NO   | PRI | NULL    |       |
+| Description | varchar(15)  | NO   |     | NULL    |       |
+| QTY_ON_Hand | int          | NO   |     | NULL    |       |
+| Sell_Price  | decimal(8,2) | NO   |     | NULL    |       |
+| Cost_Price  | decimal(8,2) | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE salesman_master (
+    -> -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> )' at line 2
+mysql> Salesman_no VARCHAR(6) PRIMARY KEY CHECK (Salesman_no REGEXP '^S'), Salesman_name VARCHAR(20) NOT NULL,
+    -> City VARCHAR(20) NOT NULL,
+    -> Pincode INT(8) NOT NULL,
+    -> State VARCHAR(20) NOT NULL,
+    -> Sal_Amt DECIMAL(8, 2) NOT NULL CHECK (Sal_Amt <> 0);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Salesman_no VARCHAR(6) PRIMARY KEY CHECK (Salesman_no REGEXP '^S'), Salesman_nam' at line 1
+mysql> CREATE TABLE salesman_master (
+    -> Salesman_no VARCHAR(6) PRIMARY KEY CHECK (Salesman_no REGEXP '^S'), Salesman_name VARCHAR(20) NOT NULL,
+    -> City VARCHAR(20) NOT NULL,
+    -> Pincode INT(8) NOT NULL,
+    -> State VARCHAR(20) NOT NULL,
+    -> Sal_Amt DECIMAL(8, 2) NOT NULL CHECK (Sal_Amt <> 0));
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> desc salesman_master;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| Salesman_no   | varchar(6)   | NO   | PRI | NULL    |       |
+| Salesman_name | varchar(20)  | NO   |     | NULL    |       |
+| City          | varchar(20)  | NO   |     | NULL    |       |
+| Pincode       | int          | NO   |     | NULL    |       |
+| State         | varchar(20)  | NO   |     | NULL    |       |
+| Sal_Amt       | decimal(8,2) | NO   |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> create table sales_order( Order_no varchar(6) primary key check(Order_no REGEXP '0'), Client no varchar(6), foreign key(Client_no) REFERENCES client_master(Client_No) ON DELETE CASCADE );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'no varchar(6), foreign key(Client_no) REFERENCES client_master(Client_No) ON DEL' at line 1
+mysql> create table sales_order( Order_no varchar(6) primary key check(Order_no REGEXP '0'), Client_no varchar(6), foreign key(Client_no) REFERENCES client_master(Client_No) ON DELETE CASCADE );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> alter table sales_order add (Order_date date, salesman_no varchar(6), foreign key(salesman_no) references salesman_master (salesman_no) ON DELETE CASCADE );
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table sales_order add (Dely_type char, Dely_date date);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE sales_order
+    -> MODIFY Dely_type ENUM('P', 'F');
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table sales_order add (Dely_type char, Dely_date date);
+ERROR 1060 (42S21): Duplicate column name 'Dely_type'
+mysql> alter table sales_order modify (Dely_type char, Dely_date date);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(Dely_type char, Dely_date date)' at line 1
+mysql> insert into client_master values ('C1', 'Pravin', 'Kolkata', 700102, 'West Bengal', 10000.32);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into client_master values ('C2', 'Ajay', 'Noida', 700102, 'Uttar Pradesh', 5000.43);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into client_master values ('C3', 'Vishal', 'Jamshedpur', 831004, 'Jharkhand', 50000.23);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into client_master values ('C4', 'Rahul', 'Asansol', 700032, 'West Bengal', 72000.23);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into client_master values ('C5', 'Ankit', 'Hyderabad', 700032, 'Telangana', 72000.23);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  select * from Client_master;
+ERROR 1146 (42S02): Table 'Test.Client_master' doesn't exist
+mysql>  select * from client_master;
++-----------+--------+------------+---------+---------------+----------+
+| Client_no | Name   | City       | Pincode | State         | BalDue   |
++-----------+--------+------------+---------+---------------+----------+
+| C1        | Pravin | Kolkata    |  700102 | West Bengal   | 10000.32 |
+| C2        | Ajay   | Noida      |  700102 | Uttar Pradesh |  5000.43 |
+| C3        | Vishal | Jamshedpur |  831004 | Jharkhand     | 50000.23 |
+| C4        | Rahul  | Asansol    |  700032 | West Bengal   | 72000.23 |
+| C5        | Ankit  | Hyderabad  |  700032 | Telangana     | 72000.23 |
++-----------+--------+------------+---------+---------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> update client_master set Pincode = 630011 where client_no = 'C2';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update client_master set Pincode = 540011 where client_no = 'C5';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  select * from client_master;
++-----------+--------+------------+---------+---------------+----------+
+| Client_no | Name   | City       | Pincode | State         | BalDue   |
++-----------+--------+------------+---------+---------------+----------+
+| C1        | Pravin | Kolkata    |  700102 | West Bengal   | 10000.32 |
+| C2        | Ajay   | Noida      |  630011 | Uttar Pradesh |  5000.43 |
+| C3        | Vishal | Jamshedpur |  831004 | Jharkhand     | 50000.23 |
+| C4        | Rahul  | Asansol    |  700032 | West Bengal   | 72000.23 |
+| C5        | Ankit  | Hyderabad  |  540011 | Telangana     | 72000.23 |
++-----------+--------+------------+---------+---------------+----------+
+5 rows in set (0.01 sec)
+
+mysql> insert into product_master values ('P5', 'Exhaust', 5, 18000, 14000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into product_master values ('P1', 'Tyres', 10, 26000, 20000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product_master values ('P2', 'Leather Seat', 20, 110000, 80000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product_master values ('P3', 'Paint Job', 11, 120000, 85000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product_master values ('P4', 'Alloy Rims', 42, 140000, 90000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * form product mmaster;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form product mmaster' at line 1
+mysql> select * form product_master;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form product_master' at line 1
+mysql> select * from product_master;
++------------+--------------+-------------+------------+------------+
+| Product_no | Description  | QTY_ON_Hand | Sell_Price | Cost_Price |
++------------+--------------+-------------+------------+------------+
+| P1         | Tyres        |          10 |   26000.00 |   20000.00 |
+| P2         | Leather Seat |          20 |  110000.00 |   80000.00 |
+| P3         | Paint Job    |          11 |  120000.00 |   85000.00 |
+| P4         | Alloy Rims   |          42 |  140000.00 |   90000.00 |
+| P5         | Exhaust      |           5 |   18000.00 |   14000.00 |
++------------+--------------+-------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into salesman_master values ('S1', 'ABC', 'Kolkata', 700102, 'West Bengal', 2000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into salesman_master values ('S2', 'DEF', 'Noida', 630011, 'Uttar Pradesh', 4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into salesman_master values ('S3', 'GHI', 'Jamshedpur', 831004, 'Jharkhand', 5000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into salesman_master values ('S4', 'JKL', 'Asansol', 700032, 'West Bengal', 3500);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into salesman_master values ('S5', 'MNO', 'Hyderabad',540011, 'Telangana', 6500);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * form salesman_master;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form salesman_master' at line 1
+mysql> select * from salesman_master;
++-------------+---------------+------------+---------+---------------+---------+
+| Salesman_no | Salesman_name | City       | Pincode | State         | Sal_Amt |
++-------------+---------------+------------+---------+---------------+---------+
+| S1          | ABC           | Kolkata    |  700102 | West Bengal   | 2000.00 |
+| S2          | DEF           | Noida      |  630011 | Uttar Pradesh | 4000.00 |
+| S3          | GHI           | Jamshedpur |  831004 | Jharkhand     | 5000.00 |
+| S4          | JKL           | Asansol    |  700032 | West Bengal   | 3500.00 |
+| S5          | MNO           | Hyderabad  |  540011 | Telangana     | 6500.00 |
++-------------+---------------+------------+---------+---------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into sales_order values('026', 'C1', '2023-11-1', 'S1', 'F', '2023-11-2' );
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sales_order values ('027', 'C2', '2023-11-2', 'S2', 'F', '2023-11-3' );
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into sales_order values ('028', 'C3', '2023-11-2', 'S3', 'P', '2023-11-3' );
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sales_order values ('029', 'C4', '2023-11-4', 'S4, 'P', '2023-11-6' );
+    '> ;
+    '> ^C
+mysql> insert into sales_order values ('029', 'C4', '2023-11-4', 'S4, 'P', '2023-11-6');
+    '> ^C
+mysql> insert into sales_order values('029', 'C4', '2023-11-4', 'S4, 'P', '2023-11-6');
+    '> 
+    '> ;
+    '> ^C
+mysql> 
+mysql> insert into sales_order values ('029', 'C4', '2023-11-4', 'S4, 'P', '2023-11-6');
+    '> ^C
+mysql> 
+mysql> select * from sales_order;
++----------+-----------+------------+-------------+-----------+------------+
+| Order_no | Client_no | Order_date | salesman_no | Dely_type | Dely_date  |
++----------+-----------+------------+-------------+-----------+------------+
+| 026      | C1        | 2023-11-01 | S1          | F         | 2023-11-02 |
+| 027      | C2        | 2023-11-02 | S2          | F         | 2023-11-03 |
+| 028      | C3        | 2023-11-02 | S3          | P         | 2023-11-03 |
++----------+-----------+------------+-------------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into sales_order values('029','C4','2023-11-4','S4,'P','2023-11-6');
+    '> ^C
+mysql> 
+mysql> insert into sales_order values('029', 'C4', '2023-11-4', 'S4','2023-11-6');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into sales_order values(029, 'C4', '2023-11-4', 'S4','2023-11-6');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into sales_order values(029, 'C4', '2023-11-4', 'S4', 'P','2023-11-6');
+ERROR 3819 (HY000): Check constraint 'sales_order_chk_1' is violated.
+mysql> insert into sales_order values('O29', 'C4', '2023-11-4', 'S4', 'P','2023-11-6');
+ERROR 3819 (HY000): Check constraint 'sales_order_chk_1' is violated.
+mysql> insert into sales_order values('029', 'C4', '2023-11-4', 'S4', 'P','2023-11-6');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into sales_order values ('020', 'C5', '2023-11-5', 'S2', 'P', '2023-11-9' );
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * form sales_order;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form sales_order' at line 1
+mysql> select * from sales_order;
++----------+-----------+------------+-------------+-----------+------------+
+| Order_no | Client_no | Order_date | salesman_no | Dely_type | Dely_date  |
++----------+-----------+------------+-------------+-----------+------------+
+| 020      | C5        | 2023-11-05 | S2          | P         | 2023-11-09 |
+| 026      | C1        | 2023-11-01 | S1          | F         | 2023-11-02 |
+| 027      | C2        | 2023-11-02 | S2          | F         | 2023-11-03 |
+| 028      | C3        | 2023-11-02 | S3          | P         | 2023-11-03 |
+| 029      | C4        | 2023-11-04 | S4          | P         | 2023-11-06 |
++----------+-----------+------------+-------------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> desc sales_order_details;
+ERROR 1146 (42S02): Table 'Test.sales_order_details' doesn't exist
+mysql> show tables;
++-----------------+
+| Tables_in_Test  |
++-----------------+
+| client_master   |
+| product_master  |
+| sales_order     |
+| salesman_master |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> create table sales_order_details(order_no  varchar(6), foreign key(product_no) references sales)
+    -> ;
+ERROR 1072 (42000): Key column 'product_no' doesn't exist in table
+mysql> create table sales_order_details(order_no  varchar(6), foreign key(order_no) references sales_order(Order_no) ON DELETE CASCADE, product_no varchar(6), foreign key(product_no) references product_master(Product_no) ON DELETE CASCADE, Qty_disp int(8), product_rating decimal(10,2));
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+mysql> desc sales_order_details;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| order_no       | varchar(6)    | YES  | MUL | NULL    |       |
+| product_no     | varchar(6)    | YES  | MUL | NULL    |       |
+| Qty_disp       | int           | YES  |     | NULL    |       |
+| product_rating | decimal(10,2) | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into sales_order_details values ('027', 'P2', 7, 4.63);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sales_order_details values ('028', 'P3', 9, 3.93);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sales_order_details values ('029', 'P4', 40, 4.93);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into sales_order_details values('020', 'P5', 4, 4.23);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from sales_order_details;
++----------+------------+----------+----------------+
+| order_no | product_no | Qty_disp | product_rating |
++----------+------------+----------+----------------+
+| 027      | P2         |        7 |           4.63 |
+| 028      | P3         |        9 |           3.93 |
+| 029      | P4         |       40 |           4.93 |
+| 020      | P5         |        4 |           4.23 |
++----------+------------+----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> delete from salesman_master where sal_amt = 3500;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from salesman_master;
++-------------+---------------+------------+---------+---------------+---------+
+| Salesman_no | Salesman_name | City       | Pincode | State         | Sal_Amt |
++-------------+---------------+------------+---------+---------------+---------+
+| S1          | ABC           | Kolkata    |  700102 | West Bengal   | 2000.00 |
+| S2          | DEF           | Noida      |  630011 | Uttar Pradesh | 4000.00 |
+| S3          | GHI           | Jamshedpur |  831004 | Jharkhand     | 5000.00 |
+| S5          | MNO           | Hyderabad  |  540011 | Telangana     | 6500.00 |
++-------------+---------------+------------+---------+---------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from salesman_master where sal_amt = 5000;
++-------------+---------------+------------+---------+-----------+---------+
+| Salesman_no | Salesman_name | City       | Pincode | State     | Sal_Amt |
++-------------+---------------+------------+---------+-----------+---------+
+| S3          | GHI           | Jamshedpur |  831004 | Jharkhand | 5000.00 |
++-------------+---------------+------------+---------+-----------+---------+
+1 row in set (0.00 sec)
